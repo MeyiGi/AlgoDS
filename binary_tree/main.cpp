@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <queue>
+#include <vector>
 using namespace std;
 
 struct Node {
@@ -18,6 +19,7 @@ public:
 
     BinaryTree() : root(nullptr) {}
 
+    // Add node to tree function
     void addNode(int val) {
         if (!root) {
             root = new Node(val);
@@ -40,7 +42,7 @@ public:
         }
     }
 
-    // Delete Functions
+    // Delete Function and helper functions
     void deleteNode(int val) {
         Node* parent = nullptr;
         Node* node_to_delete = findNodeWithParent(val, parent);
@@ -77,8 +79,28 @@ public:
         replaceChild(minParent, minNode, minNode->right);
         delete minNode;
     }
+    
+    // Getting sorted array
+    vector<int> inorderTraversal() {
+        vector<int> sortedValues;
+        inorderHelper(root, sortedValues);
+        cout << "\n";
+        for (int num: sortedValues) {
+            cout << num << " ->";
+        }
+        cout << " nullptr" << endl;
+        return sortedValues;
 
+    }
 
+    // Saving tree to json file
+    void saveTree(const string& filename) {
+        ofstream file(filename);
+        exportToJson(file, root);
+        file.close();
+    }
+
+private:
 
     Node* findNodeWithParent(int val, Node*& parent) {
         Node * current = root;
@@ -115,6 +137,17 @@ public:
             parent->right = newChild;
         }
     }
+
+    void inorderHelper(Node* node, vector<int>& sortedValues) {
+        if (!node) 
+            return;
+        
+        inorderHelper(node->left, sortedValues);
+        sortedValues.push_back(node->val);
+        inorderHelper(node->right, sortedValues);
+    }
+
+
     
     // json stuff for connecting with matplotlib
     void exportToJson(ofstream& file, Node* node) {
@@ -127,12 +160,6 @@ public:
         file << ", \"right\": ";
         exportToJson(file, node->right);
         file << " }";
-    }
-
-    void saveTree(const string& filename) {
-        ofstream file(filename);
-        exportToJson(file, root);
-        file.close();
     }
 };
 
@@ -160,6 +187,9 @@ int main() {
                 tree.saveTree("tree.json");
                 break;
             case 3:
+                tree.inorderTraversal();
+                break;
+            case 4:
                 cout << "Terminating the process..." << endl;
                 exit(0);
         }
