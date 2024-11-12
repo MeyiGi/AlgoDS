@@ -79,6 +79,21 @@ public:
         replaceChild(minParent, minNode, minNode->right);
         delete minNode;
     }
+
+    // does node exists?
+    void findNode(int val) {
+        Node* current = root;
+
+        while (current) {
+            if (current->val == val) {
+                cout << endl << val << " exist in tree" << endl;
+                return;
+            }
+
+            current = val > current->val ? current->right : current->left;
+        }
+        cout << val << " not exist in tree" << endl;
+    }
     
     // Getting sorted array
     vector<int> inorderTraversal() {
@@ -86,9 +101,9 @@ public:
         inorderHelper(root, sortedValues);
         cout << "\n";
         for (int num: sortedValues) {
-            cout << num << " ->";
+            cout << num << " -> ";
         }
-        cout << " nullptr" << endl;
+        cout << "nullptr" << endl;
         return sortedValues;
 
     }
@@ -169,7 +184,7 @@ int main() {
     cout << "Please add at least 2 node\n" << endl;
 
     while (true) {
-        cout << "1. Add Node\n2. Delete Node\n3. Exit" << endl;
+        cout << "1. Add Node\n2. Delete Node\n3. View Sorted Tree(stack)\n4. does num exist?\n5. Exit" << endl;
         cout << "Enter the choice: ";
         cin >> choice;
 
@@ -190,6 +205,11 @@ int main() {
                 tree.inorderTraversal();
                 break;
             case 4:
+                cout << "Enter val which you wanna know exists: ";
+                cin >> val;
+                tree.findNode(val);
+                break;
+            case 5:
                 cout << "Terminating the process..." << endl;
                 exit(0);
         }
