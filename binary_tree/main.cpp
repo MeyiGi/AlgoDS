@@ -100,8 +100,8 @@ public:
         vector<int> sortedValues;
         inorderHelper(root, sortedValues);
         cout << "\n";
-        for (int num: sortedValues) {
-            cout << num << " -> ";
+        for (int i = sortedValues.size() - 1; i >= 0; i--) {
+            cout << sortedValues[i] << " -> ";
         }
         cout << "nullptr" << endl;
         return sortedValues;
