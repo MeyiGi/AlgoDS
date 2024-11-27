@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import networkx as nx
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -42,12 +45,31 @@ class Graph:
                 print(f"{self.matrix[i][j]}", end=" ")
             print()
 
+    def draw(self):
+        g = nx.DiGraph()
+
+        for node in self.nodes:
+            g.add_node(node.data)
+
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.matrix[i][j]:
+                    g.add_edge(self.nodes[i].data, self.nodes[j].data)
+        
+        dpi = 100
+        fig = plt.figure(figsize=(12.8, 7.8), dpi=dpi)
+
+        pos = nx.spring_layout(g)
+        nx.draw(g, pos, with_labels=True, node_color="lightblue", node_size=200, font_size=12)
+        plt.title("Graph visualization")
+        plt.show()
+
 
 def main():
-    obj = Graph(5, auto_initialize=False)
+    obj = Graph(10, auto_initialize=False)
     
     # adding nodes A, B, C, D and E
-    for ch in "ABCDE":
+    for ch in "0123456789":
         obj.addNode(ch)
 
     # creating edges for nodes
@@ -56,9 +78,19 @@ def main():
     obj.addEdge(0, 2)
     obj.addEdge(2, 3)
     obj.addEdge(3, 4)
+    obj.addEdge(4, 5)
+    obj.addEdge(2, 6)
+    obj.addEdge(2, 8)
+    obj.addEdge(2, 9)
+    obj.addEdge(5, 6)
+    obj.addEdge(8, 1)
+    obj.addEdge(7, 2)
+    obj.addEdge(6, 4)
 
     # printing result
     obj.print()
+
+    obj.draw()
 
 
 if __name__ == "__main__":
